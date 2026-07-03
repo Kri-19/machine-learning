@@ -1,0 +1,391 @@
+Aim To perform exploratory data analysis (EDA) on a student performance dataset using Pandas and Matplotlib. Dataset Create a CSV file named student_data.csv with the following data:  RollNo Name Gender Attendance InternalMarks ExternalMarks 101 Ravi M 85 32 55 102 Priya F 92 38 58 103 Kiran M 78 28 45 104 Anu F 95 40 60 105 Sita F 88 35 54 106 Raj M 70 25 40 107 Divya F 90 37 57 108 Arun M 82 30 48 109 Keerthi F 96 39 59 110 Naveen M 75 27 44  Tasks Task A: Dataset Loading and Inspection • Import the necessary Python libraries.  • Load the dataset into a Pandas DataFrame.  • Display the first five records.  • Display the last five records.  • Find the total number of rows and columns.  • Display the names of all columns.  • Display the data type of each column.  • Generate dataset information using info(). Task B: Statistical Analysis • Calculate the mean attendance of all students.  • Calculate the average Internal Marks.  • Calculate the average External Marks.  • Find the maximum Internal Marks.  • Find the minimum Internal Marks.  • Find the maximum External Marks.  • Find the minimum External Marks.  • Calculate the standard deviation of Internal Marks.  • Generate summary statistics using describe(). Task C: Data Manipulation • Create a new column named TotalMarks.  • TotalMarks=InternalMarks+ExternalMarks  • Create a new column named Percentage.  1. Percentage=TotalMarks/100×100  • Display the updated DataFrame. Task D: Filtering and Searching • Display the details of students whose attendance is greater than 90%.  • Display the details of students whose TotalMarks exceed 90.  • Display the details of female students.  • Display the details of male students.  • Display students whose ExternalMarks are less than 50. Task E: Ranking and Comparison • Identify the student with the highest TotalMarks.  • Identify the student with the lowest TotalMarks.  • Display the top three performers based on TotalMarks.  • Display the bottom three performers based on TotalMarks.  • Determine how many students scored above the class average. Task F: Group-wise Analysis • Calculate the average TotalMarks of male students.  • Calculate the average TotalMarks of female students.  • Compare the average attendance of male and female students. Task G: Data Visualization • Plot a bar chart showing TotalMarks of all students.  • Plot a histogram of Attendance.  • Plot a pie chart showing the distribution of male and female students.  • Plot a scatter plot between Attendance and TotalMarks.  • Interpret the relationship between Attendance and TotalMarks.  Task H: Observations • Write any three observations based on the analysis performed.  • State whether higher attendance appears to be associated with better academic performance. 
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# ==========================================
+# TASK A: DATASET LOADING AND INSPECTION
+# ==========================================
+# Load the file using whitespace/tab separation
+df = pd.read_csv("student_data.csv")
+
+# Strip any accidental hidden spaces around column names
+df.columns = df.columns.str.strip()
+print ("pvskrishnakanth")
+print("cse-b")
+print("24304")
+print("==================================================")
+print("          TASK A: LOADING AND INSPECTION          ")
+print("==================================================")
+print("1. First Five Records:")
+print(df.head(), "\n")
+
+print("2. Last Five Records:")
+print(df.tail(), "\n")
+
+print(f"3. Dimensions: Rows = {df.shape[0]}, Columns = {df.shape[1]}\n")
+
+print("4. Column Names:")
+print(df.columns.tolist(), "\n")
+
+print("5. Column Data Types:")
+print(df.dtypes, "\n")
+
+print("6. Comprehensive Dataset Information:")
+df.info()
+print("\n")
+
+
+# ==========================================
+# TASK B: STATISTICAL ANALYSIS
+# ==========================================
+print("==================================================")
+print("          TASK B: STATISTICAL ANALYSIS            ")
+print("==================================================")
+print(f"Mean Attendance             : {df['ATTENDANCE'].mean():.2f}%")
+print(f"Average Internal Marks      : {df['INTERNALMARKS'].mean():.2f}")
+print(f"Average External Marks      : {df['EXTERNALMARKS'].mean():.2f}")
+print(f"Maximum Internal Marks      : {df['INTERNALMARKS'].max()}")
+print(f"Minimum Internal Marks      : {df['INTERNALMARKS'].min()}")
+print(f"Maximum External Marks      : {df['EXTERNALMARKS'].max()}")
+print(f"Minimum External Marks      : {df['EXTERNALMARKS'].min()}")
+print(f"Std Dev of Internal Marks   : {df['INTERNALMARKS'].std():.2f}\n")
+
+print("Summary Statistics (describe):\n")
+print(df.describe(), "\n")
+
+
+# ==========================================
+# TASK C: DATA MANIPULATION
+# ==========================================
+print("==================================================")
+print("           TASK C: DATA MANIPULATION              ")
+print("==================================================")
+df['TotalMarks'] = df['INTERNALMARKS'] + df['EXTERNALMARKS']
+df['Percentage'] = (df['TotalMarks'] / 100) * 100
+
+print("Updated DataFrame with TotalMarks and Percentage columns:\n")
+print(df, "\n")
+
+
+# ==========================================
+# TASK D: FILTERING AND SEARCHING
+# ==========================================
+print("==================================================")
+print("          TASK D: FILTERING & SEARCHING           ")
+print("==================================================")
+print("Students with Attendance > 90%:")
+print(df[df['ATTENDANCE'] > 90], "\n")
+
+print("Students with Total Marks > 90:")
+print(df[df['TotalMarks'] > 90], "\n")
+
+print("Female Students Subset:")
+print(df[df['GENDER'] == 'F'], "\n")
+
+print("Male Students Subset:")
+print(df[df['GENDER'] == 'M'], "\n")
+
+print("Students with External Marks < 50:")
+print(df[df['EXTERNALMARKS'] < 50], "\n")
+
+
+# ==========================================
+# TASK E: RANKING AND COMPARISON
+# ==========================================
+print("==================================================")
+print("          TASK E: RANKING & COMPARISON            ")
+print("==================================================")
+class_avg_total = df['TotalMarks'].mean()
+
+print(f"Highest Performer in Class:\n{df.loc[df['TotalMarks'].idxmax()]}\n")
+print(f"Lowest Performer in Class:\n{df.loc[df['TotalMarks'].idxmin()]}\n")
+
+print("Top 3 Performers (Leaderboard):")
+print(df.nlargest(3, 'TotalMarks'), "\n")
+
+print("Bottom 3 Performers:")
+print(df.nsmallest(3, 'TotalMarks'), "\n")
+
+students_above_avg = df[df['TotalMarks'] > class_avg_total].shape[0]
+print(f"Count of Students Scoring Above Class Average ({class_avg_total:.2f}): {students_above_avg}\n")
+
+
+# ==========================================
+# TASK F: GROUP-WISE ANALYSIS
+# ==========================================
+print("==================================================")
+print("          TASK F: GROUP-WISE ANALYSIS             ")
+print("==================================================")
+gender_group = df.groupby('GENDER')
+
+print("Average Total Marks Split by Gender:")
+print(gender_group['TotalMarks'].mean(), "\n")
+
+print("Average Attendance Split by Gender:")
+print(gender_group['ATTENDANCE'].mean(), "\n")
+
+
+# ==========================================
+# TASK G: DATA VISUALIZATION
+# ==========================================
+print("Generating Visualization Plots...")
+plt.figure(figsize=(15, 10))
+
+# 1. Bar Chart: TotalMarks of all students
+plt.subplot(2, 2, 1)
+sns.barplot(x='NAME', y='TotalMarks', data=df, palette='Set2')
+plt.title('Total Marks of Individual Students')
+plt.xticks(rotation=45)
+plt.ylabel('Total Marks')
+
+# 2. Histogram: Attendance distribution
+plt.subplot(2, 2, 2)
+sns.histplot(df['ATTENDANCE'], bins=5, kde=True, color='teal')
+plt.title('Distribution Profile of Class Attendance')
+plt.xlabel('Attendance (%)')
+
+# 3. Pie Chart: Gender Distribution
+plt.subplot(2, 2, 3)
+gender_counts = df['GENDER'].value_counts()
+plt.pie(gender_counts, labels=gender_counts.index, autopct='%1.1f%%', startangle=90, colors=['#ff9999', '#66b3ff'])
+plt.title('Class Gender Distribution Split')
+
+# 4. Scatter Plot: Attendance vs TotalMarks
+plt.subplot(2, 2, 4)
+sns.scatterplot(x='ATTENDANCE', y='TotalMarks', data=df, hue='GENDER', s=120)
+plt.title('Correlation: Attendance vs Total Marks')
+plt.xlabel('Attendance Profile (%)')
+plt.ylabel('Total Marks Attained')
+
+plt.tight_layout()
+plt.show()
+
+output
+pvskrishnakanth
+cse-b
+24304
+==================================================
+          TASK A: LOADING AND INSPECTION          
+==================================================
+1. First Five Records:
+   ROLLNO    NAME GENDER  ATTENDANCE  INTERNALMARKS  EXTERNALMARKS
+0     101    Ravi      M          85             32             55
+1     102   Priya      F          92             38             58
+2     103   Kiran      M          78             28             45
+3     104     Anu      F          95             40             60
+4     105    Sita      F          88             35             54 
+
+2. Last Five Records:
+   ROLLNO      NAME GENDER  ATTENDANCE  INTERNALMARKS  EXTERNALMARKS
+5     106       Raj      M          70             25             40
+6     107     Divya      F          90             37             57
+7     108      Arun      M          82             30             48
+8     109   Keerthi      F          96             39             59
+9     110    Naveen      M          75             27             44 
+
+3. Dimensions: Rows = 10, Columns = 6
+
+4. Column Names:
+['ROLLNO', 'NAME', 'GENDER', 'ATTENDANCE', 'INTERNALMARKS', 'EXTERNALMARKS'] 
+
+5. Column Data Types:
+ROLLNO            int64
+NAME             object
+GENDER           object
+ATTENDANCE        int64
+INTERNALMARKS     int64
+EXTERNALMARKS     int64
+dtype: object 
+
+6. Comprehensive Dataset Information:
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 10 entries, 0 to 9
+Data columns (total 6 columns):
+ #   Column         Non-Null Count  Dtype 
+---  ------         --------------  ----- 
+ 0   ROLLNO         10 non-null     int64 
+ 1   NAME           10 non-null     object
+ 2   GENDER         10 non-null     object
+ 3   ATTENDANCE     10 non-null     int64 
+ 4   INTERNALMARKS  10 non-null     int64 
+ 5   EXTERNALMARKS  10 non-null     int64 
+dtypes: int64(4), object(2)
+memory usage: 612.0+ bytes
+
+
+==================================================
+          TASK B: STATISTICAL ANALYSIS            
+==================================================
+Mean Attendance             : 85.10%
+Average Internal Marks      : 33.10
+Average External Marks      : 52.00
+Maximum Internal Marks      : 40
+Minimum Internal Marks      : 25
+Maximum External Marks      : 60
+Minimum External Marks      : 40
+Std Dev of Internal Marks   : 5.43
+
+Summary Statistics (describe):
+
+          ROLLNO  ATTENDANCE  INTERNALMARKS  EXTERNALMARKS
+count   10.00000   10.000000       10.00000      10.000000
+mean   105.50000   85.100000       33.10000      52.000000
+std      3.02765    8.736259        5.42525       7.149204
+min    101.00000   70.000000       25.00000      40.000000
+25%    103.25000   79.000000       28.50000      45.750000
+50%    105.50000   86.500000       33.50000      54.500000
+75%    107.75000   91.500000       37.75000      57.750000
+max    110.00000   96.000000       40.00000      60.000000 
+
+==================================================
+           TASK C: DATA MANIPULATION              
+==================================================
+Updated DataFrame with TotalMarks and Percentage columns:
+
+   ROLLNO      NAME GENDER  ATTENDANCE  INTERNALMARKS  EXTERNALMARKS  \
+0     101      Ravi      M          85             32             55   
+1     102     Priya      F          92             38             58   
+2     103     Kiran      M          78             28             45   
+3     104       Anu      F          95             40             60   
+4     105      Sita      F          88             35             54   
+5     106       Raj      M          70             25             40   
+6     107     Divya      F          90             37             57   
+7     108      Arun      M          82             30             48   
+8     109   Keerthi      F          96             39             59   
+9     110    Naveen      M          75             27             44   
+
+   TotalMarks  Percentage  
+0          87        87.0  
+1          96        96.0  
+2          73        73.0  
+3         100       100.0  
+4          89        89.0  
+5          65        65.0  
+6          94        94.0  
+7          78        78.0  
+8          98        98.0  
+9          71        71.0   
+
+==================================================
+          TASK D: FILTERING & SEARCHING           
+==================================================
+Students with Attendance > 90%:
+   ROLLNO      NAME GENDER  ATTENDANCE  INTERNALMARKS  EXTERNALMARKS  \
+1     102     Priya      F          92             38             58   
+3     104       Anu      F          95             40             60   
+8     109   Keerthi      F          96             39             59   
+
+   TotalMarks  Percentage  
+1          96        96.0  
+3         100       100.0  
+8          98        98.0   
+
+Students with Total Marks > 90:
+   ROLLNO      NAME GENDER  ATTENDANCE  INTERNALMARKS  EXTERNALMARKS  \
+1     102     Priya      F          92             38             58   
+3     104       Anu      F          95             40             60   
+6     107     Divya      F          90             37             57   
+8     109   Keerthi      F          96             39             59   
+
+   TotalMarks  Percentage  
+1          96        96.0  
+3         100       100.0  
+6          94        94.0  
+8          98        98.0   
+
+Female Students Subset:
+Empty DataFrame
+Columns: [ROLLNO, NAME, GENDER, ATTENDANCE, INTERNALMARKS, EXTERNALMARKS, TotalMarks, Percentage]
+Index: [] 
+
+Male Students Subset:
+Empty DataFrame
+Columns: [ROLLNO, NAME, GENDER, ATTENDANCE, INTERNALMARKS, EXTERNALMARKS, TotalMarks, Percentage]
+Index: [] 
+
+Students with External Marks < 50:
+   ROLLNO     NAME GENDER  ATTENDANCE  INTERNALMARKS  EXTERNALMARKS  \
+2     103    Kiran      M          78             28             45   
+5     106      Raj      M          70             25             40   
+7     108     Arun      M          82             30             48   
+9     110   Naveen      M          75             27             44   
+
+   TotalMarks  Percentage  
+2          73        73.0  
+5          65        65.0  
+7          78        78.0  
+9          71        71.0   
+
+==================================================
+          TASK E: RANKING & COMPARISON            
+==================================================
+Highest Performer in Class:
+ROLLNO             104
+NAME               Anu
+GENDER               F
+ATTENDANCE          95
+INTERNALMARKS       40
+EXTERNALMARKS       60
+TotalMarks         100
+Percentage       100.0
+Name: 3, dtype: object
+
+Lowest Performer in Class:
+ROLLNO            106
+NAME              Raj
+GENDER              M
+ATTENDANCE         70
+INTERNALMARKS      25
+EXTERNALMARKS      40
+TotalMarks         65
+Percentage       65.0
+Name: 5, dtype: object
+
+Top 3 Performers (Leaderboard):
+   ROLLNO      NAME GENDER  ATTENDANCE  INTERNALMARKS  EXTERNALMARKS  \
+3     104       Anu      F          95             40             60   
+8     109   Keerthi      F          96             39             59   
+1     102     Priya      F          92             38             58   
+
+   TotalMarks  Percentage  
+3         100       100.0  
+8          98        98.0  
+1          96        96.0   
+
+Bottom 3 Performers:
+   ROLLNO     NAME GENDER  ATTENDANCE  INTERNALMARKS  EXTERNALMARKS  \
+5     106      Raj      M          70             25             40   
+9     110   Naveen      M          75             27             44   
+2     103    Kiran      M          78             28             45   
+
+   TotalMarks  Percentage  
+5          65        65.0  
+9          71        71.0  
+2          73        73.0   
+
+Count of Students Scoring Above Class Average (85.10): 6
+
+==================================================
+          TASK F: GROUP-WISE ANALYSIS             
+==================================================
+Average Total Marks Split by Gender:
+GENDER
+F    95.4
+M    74.8
+Name: TotalMarks, dtype: float64 
+
+Average Attendance Split by Gender:
+GENDER
+F    92.2
+M    78.0
+Name: ATTENDANCE, dtype: float64 
+
+Generating Visualization Plots...
+C:\Users\CSE Lab\AppData\Local\Temp\ipykernel_9448\2841022122.py:136: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(x='NAME', y='TotalMarks', data=df, palette='Set2')
+
+
