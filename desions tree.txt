@@ -1,0 +1,22 @@
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+data = load_iris()
+X = data.data
+y = data.target
+clf = DecisionTreeClassifier(max_depth=3, random_state=42)
+clf.fit(X, y)
+plt.figure(figsize=(15, 10))  
+
+plot_tree(
+    clf,
+    feature_names=data.feature_names,
+    class_names=data.target_names,  # Adds target class labels
+    filled=True,  # Colors the nodes based on class purity
+    rounded=True,  # Rounds the edges of the decision boxes
+    fontsize=12,  # Increases text size inside boxes
+)
+
+# 4. Display the chart
+plt.title("Visualized Decision Tree Structure")
+plt.show()
