@@ -1,0 +1,22 @@
+import pandas as pd
+import math
+
+df = pd.read_csv("teens.csv")
+
+target = df.columns[-1]
+attributes = list(df.columns[:-1])
+
+n = int(0.8*len(df))
+
+train = df.iloc[:n]
+test = df.iloc[n:]
+
+print("Target:", target)
+print("Training rows:", len(train))
+print("Testing rows:", len(test))
+ 
+
+output:-
+Target: ExternalMarks
+Training rows: 8
+Testing rows: 2
